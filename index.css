@@ -1,0 +1,9 @@
+/* You can add your custom css here.*/
+
+body{
+    margin: 0;
+}
+
+.sd-title.sd-element__title {
+    font-weight: normal;
+}
