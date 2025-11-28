@@ -2,8 +2,31 @@
 
 body{
     margin: 0;
+    background-color: #ffffff;
 }
 
 .sd-title.sd-element__title {
     font-weight: normal;
+}
+
+.sd-root-modern {
+    background-color: #ffface;
+
+}
+
+#surveyContainer {
+
+    border: 1px solid rgb(230, 195, 16);
+    border-radius: 10px;
+    margin: 5px;
+    padding: 10px;
+    background-color: #ffface;
+}
+
+
+
+
+@font-face {
+  font-family: "Nunito";
+  src: url('fonts/nunito.a.woff2');
 }
