@@ -61,21 +61,32 @@
 
 
             var surveyJson = {
+                showPrevButton: false,
+                questionTitlePattern: "numTitle",
+                completedHtml: "<img src='img/animation.gif' style='width: 100px;'/><p>Vielen Dank. Ihre Antworten werden übertragen, anschließend werden Sie automatisch zu Prolific zurückgeleitet. Bitte warten...</p>",    
                 pages: [
                     {
-                        name: "consent",
-                        elements: [
-                            {
-                                type: "html",
-                                html: "<h2>Welcome to the Survey</h2><p>Please read the information below and provide your consent to participate.</p>"
-                            },
-                            {
-                                type: "boolean",
-                                name: "consent",
-                                title: "Do you consent to participate in this survey?",
-                                isRequired: true
-                            }
-                        ]
+                       name: "consent",
+
+                            elements: [
+                                {
+                                    "type": "html",
+                                    "name": "briefing",
+                                    "html": "<h3>Willkommen zurück!</h3><p>Schön, dass Sie wieder an einer Umfrage der Universität Bamberg teilnehmen. <b>Sie haben uns vor einigen Wochen einen Kassenzettel geschickt. In dieser Umfrage möchten wir näher darauf eingehen und Ihre Meinung zu einer möglichen Veränderung der Mehrwertsteuer auf Lebensmittel erfassen.</b> Die Teilnahme wird rund 5 Minuten dauern, ist freiwillig und kann jederzeit abgebrochen werden.</p><p>Ihre Angaben werden für wissenschaftliche Zwecke erhoben und können in anonymisierter Form dauerhaft in einem öffentlichen Repositorium abgelegt werden. Ein Rückschluss auf Ihre Person ist dabei keinesfalls möglich. Weitere Informationen zur Datenverarbeitung finden Sie <a href='https://www.uni-bamberg.de/datenschutz/datenschutzinformationen/allgemeine-inhalte-datenschutzinformationen/', target='_blank'>hier</a>. Sie können Ihre Zustimmung zur Datenverarbeitung jederzeit per Email an philipp.sprengholz@uni-bamberg.de widerrufen.</p>",
+                                    "startWithNewLine": false
+                                },
+                                {
+
+                                    "type": "boolean",
+                                    "name": "consent",
+                                    "title": "**Einwilligungserklärung**",
+                                    "labelTrue": "**Ja, ich möchte an der Umfrage teilnehmen** und willige in die Verarbeitung meiner Daten zum Zweck der wissenschaftlichen Forschung ein.",
+                                    "labelFalse": "**Nein, ich möchte nicht an der Umfrage teilnehmen.**",
+                                    "renderAs": "radio",
+                                    "isRequired": true,
+                                    "swapOrder": true
+                                }
+                            ]
                     },
                     {
                         name: "website",
@@ -149,7 +160,7 @@
 
             const survey = new Survey.Model(surveyJson);
 
-            survey.applyTheme(SurveyTheme.DoubleBorderLight);
+            survey.applyTheme(SurveyTheme.LayeredLight);
 
             const converter = markdownit({
                 html: true
@@ -163,8 +174,7 @@
             survey.onCurrentPageChanged.add(function (sender, options) {
                 if (options.newCurrentPage.name === "website") {
                     showWebsite();
-                }
-                if (options.newCurrentPage.name === "followup") {
+                } else {
                     hideWebsite();
                 }
             });

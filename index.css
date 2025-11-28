@@ -10,17 +10,14 @@ body{
 }
 
 .sd-root-modern {
-    background-color: #ffface;
+    background: transparent;
 
 }
 
 #surveyContainer {
 
-    border: 1px solid rgb(230, 195, 16);
-    border-radius: 10px;
-    margin: 5px;
-    padding: 10px;
-    background-color: #ffface;
+
+   
 }
 
 
