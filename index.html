@@ -63,94 +63,135 @@
             var surveyJson = {
                 showPrevButton: false,
                 questionTitlePattern: "numTitle",
-                completedHtml: "<img src='img/animation.gif' style='width: 100px;'/><p>Vielen Dank. Ihre Antworten werden übertragen, anschließend werden Sie automatisch zu Prolific zurückgeleitet. Bitte warten...</p>",    
+                completedHtml: "<img src='img/animation.gif' style='width: 100px;'/><p>Thank you! Your answeres are stored, please wait...</p>",
                 pages: [
                     {
-                       name: "consent",
+                        name: "consent",
 
-                            elements: [
-                                {
-                                    "type": "html",
-                                    "name": "briefing",
-                                    "html": "<h3>Willkommen zurück!</h3><p>Schön, dass Sie wieder an einer Umfrage der Universität Bamberg teilnehmen. <b>Sie haben uns vor einigen Wochen einen Kassenzettel geschickt. In dieser Umfrage möchten wir näher darauf eingehen und Ihre Meinung zu einer möglichen Veränderung der Mehrwertsteuer auf Lebensmittel erfassen.</b> Die Teilnahme wird rund 5 Minuten dauern, ist freiwillig und kann jederzeit abgebrochen werden.</p><p>Ihre Angaben werden für wissenschaftliche Zwecke erhoben und können in anonymisierter Form dauerhaft in einem öffentlichen Repositorium abgelegt werden. Ein Rückschluss auf Ihre Person ist dabei keinesfalls möglich. Weitere Informationen zur Datenverarbeitung finden Sie <a href='https://www.uni-bamberg.de/datenschutz/datenschutzinformationen/allgemeine-inhalte-datenschutzinformationen/', target='_blank'>hier</a>. Sie können Ihre Zustimmung zur Datenverarbeitung jederzeit per Email an philipp.sprengholz@uni-bamberg.de widerrufen.</p>",
-                                    "startWithNewLine": false
-                                },
-                                {
+                        elements: [
+                            {
+                                "type": "html",
+                                "name": "briefing",
+                                "html": "<h3>Hello!</h3><p>Thank you very much for taking part in this short survey from the University of Bamberg, Germany. You will be shown a website and asked some questions about childhood vaccination. The entire survey will take about 5 minutes to complete. Your participation is voluntary, and you may withdraw at any time.</p><p>Your responses will be collected for scientific purposes and may be stored permanently in an anonymized form in a public repository. It will not be possible to trace the data back to you. For more information on data processing, please see <a href='https://www.uni-bamberg.de/datenschutz/datenschutzinformationen/allgemeine-inhalte-datenschutzinformationen/', target='_blank'>here</a>. You can withdraw your consent to data processing at any time by emailing <a href='mailto:philipp.sprengholz@uni-bamberg.de'>philipp.sprengholz@uni-bamberg.de</a></p>",
+                                "startWithNewLine": false
+                            },
+                            {
 
-                                    "type": "boolean",
-                                    "name": "consent",
-                                    "title": "**Einwilligungserklärung**",
-                                    "labelTrue": "**Ja, ich möchte an der Umfrage teilnehmen** und willige in die Verarbeitung meiner Daten zum Zweck der wissenschaftlichen Forschung ein.",
-                                    "labelFalse": "**Nein, ich möchte nicht an der Umfrage teilnehmen.**",
-                                    "renderAs": "radio",
-                                    "isRequired": true,
-                                    "swapOrder": true
-                                }
-                            ]
+                                "type": "boolean",
+                                "name": "consent",
+                                "title": "**Consent**",
+                                "labelTrue": "Yes, I would like to participate in the survey and consent to the processing of my data for the purpose of scientific research.",
+                                "labelFalse": "No, I do not want to participate in the survey.",
+                                "renderAs": "radio",
+                                "isRequired": true,
+                                "swapOrder": true
+                            }
+                        ]
+                    },
+                    {
+                        name: "screener",
+                        elements: [
+                            {
+                                type: "radiogroup",
+                                name: "children",
+                                title: "**How many children do you have?**",
+                                isRequired: true,
+                                colCount: 2,
+                                choices: ["0", "1", "2", "3 or more"]
+                            },
+                            {
+                                type: "radiogroup",
+                                name: "childage",
+                                title: "**How old is your youngest child?**",
+                                isRequired: true,
+                                colCount: 1,
+                                choices: ["Less than 1 year old", "1 year old or older"],
+                                visibleIf: "{children} == '1' or {children} == '2' or {children} == '3 or more'"
+                            }
+                        ]
+                    },
+                    {
+                        name: "briefing",
+                        elements: [
+                            {
+                                type: "html",
+                                html: "<p><b>On the next page, you will see a website published by the Center for Disease Control and Prevention (CDC).</b></p><p><b>Please take at least 2 minutes to review the information presented on the website before proceeding. After 2 minutes, the <i>Next</i> button will appear at the end of the website.</b></p>"
+                            }
+
+                        ]
                     },
                     {
                         name: "website",
                         elements: [
                             {
                                 type: "html",
-                                html: "<h2>Survey Content</h2><p>Here is some information for you:</p>"
-                            },
-                            {
-                                type: "rating",
-                                name: "question1",
-                                title: "How would you rate the content?",
-                                isRequired: true,
-                                rateValues: [
-                                    { value: 1, text: "Very Bad" },
-                                    { value: 2, text: "Bad" },
-                                    { value: 3, text: "Okay" },
-                                    { value: 4, text: "Good" },
-                                    { value: 5, text: "Excellent" }
-                                ]
-                            },
-                            {
-                                type: "rating",
-                                name: "question2",
-                                title: "How likely are you to recommend this survey?",
-                                isRequired: true,
-                                rateValues: [
-                                    { value: 1, text: "Very Unlikely" },
-                                    { value: 2, text: "Unlikely" },
-                                    { value: 3, text: "Neutral" },
-                                    { value: 4, text: "Likely" },
-                                    { value: 5, text: "Very Likely" }
-                                ]
+                                name: "countdown",
+                                html: "<p id='countdowninfo'>Please spend at least 2 minutes on this page. <span id='countdownremaining'>The <i>Next</i> button will appear in <b>120 seconds</b></span>.</p>"
                             }
                         ]
                     },
                     {
-                        name: "followup",
+                        name: "vaccination",
                         elements: [
                             {
                                 type: "rating",
-                                name: "question3",
-                                title: "How satisfied are you with the survey experience?",
-                                isRequired: true,
-                                rateValues: [
-                                    { value: 1, text: "Very Dissatisfied" },
-                                    { value: 2, text: "Dissatisfied" },
-                                    { value: 3, text: "Neutral" },
-                                    { value: 4, text: "Satisfied" },
-                                    { value: 5, text: "Very Satisfied" }
-                                ]
+                                name: "sideeffects",
+                                title: "**How likely do you think it is that children will experience serious side effects from vaccination?**",
+                                minRateDescription: "extremely unlikely",
+                                maxRateDescription: "extremely likeley",
+                                rateMin: 1,
+                                rateMax: 7,
+                                isRequired: true
                             },
                             {
                                 type: "rating",
-                                name: "question4",
-                                title: "How clear was the survey's purpose?",
-                                isRequired: true,
-                                rateValues: [
-                                    { value: 1, text: "Very Unclear" },
-                                    { value: 2, text: "Unclear" },
-                                    { value: 3, text: "Neutral" },
-                                    { value: 4, text: "Clear" },
-                                    { value: 5, text: "Very Clear" }
-                                ]
+                                name: "vaccintention",
+                                title: "**In the US, children receive vaccination against measles, mumps and rubella (MMR) in two doses. The first dose is given at 12-15 months of age, and the second dose is given at 4-6 years of age.\n\nHow likely are you to give the MMR vaccine to your youngest child once it is 12-15 months of age?**",
+                                minRateDescription: "extremely unlikely",
+                                maxRateDescription: "extremely likeley",
+                                rateMin: 1,
+                                rateMax: 7,
+                                isRequired: true
+                            }
+                        ]
+                    },
+                    {
+                        name: "trust",
+                        elements: [
+                           {
+                                type: "rating",
+                                name: "trustvac",
+                                title: "**How much do you trust vaccination information and recommendations from the CDC?**",
+                                minRateDescription: "very little",
+                                maxRateDescription: "very much",
+                                rateMin: 1,
+                                rateMax: 7,
+                                isRequired: true
+                            },
+                            {
+                                type: "rating",
+                                name: "trustgeneral",
+                                title: "**How much do you trust health-related information and recommendations from the CDC in general?**",
+                                minRateDescription: "very little",
+                                maxRateDescription: "very much",
+                                rateMin: 1,
+                                rateMax: 7,
+                                isRequired: true
+                            }
+                        ]
+                    },
+                    {
+                        name: "other",
+                        elements: [
+                             {
+                                type: "rating",
+                                name: "polorientation",
+                                title: "**In general, how would you describe your political views?**",
+                                minRateDescription: "very liberal",
+                                maxRateDescription: "very conservative",
+                                rateMin: 1,
+                                rateMax: 7,
+                                isRequired: true
                             }
                         ]
                     }
@@ -171,11 +212,52 @@
                 options.html = str;
             });
 
+
             survey.onCurrentPageChanged.add(function (sender, options) {
+
+                // show website on website page, then hide it again
                 if (options.newCurrentPage.name === "website") {
                     showWebsite();
                 } else {
                     hideWebsite();
+                }
+
+
+
+                // show countdown timer
+
+                let countdownTimer = null;
+                let countdownRemaining = 20; // seconds
+                let originalNextText = "Next";
+
+                if (options.newCurrentPage.name === "website") {
+
+                    // Disable NEXT button completely
+                    document.getElementById("sv-nav-next").style.display = "none";
+
+
+                    countdownTimer = setInterval(function () {
+                        countdownRemaining--;
+                        document.getElementById("countdownremaining").innerHTML = "The <i>Next</i> button will appear in <b>" + countdownRemaining + " seconds</b>";
+                        if (countdownRemaining <= 0) {
+                            clearInterval(countdownTimer);
+                            document.getElementById("sv-nav-next").style.display = "block";
+                            document.getElementById("countdowninfo").innerHTML = "You can now proceed to the next page by clicking the <i>Next</i> button below.";
+                        }
+                    }, 1000);
+                }
+
+
+
+            });
+
+            // screen out
+            survey.onCurrentPageChanging.add(function (sender, options) {
+                if (sender.currentPage.name === "screener") {
+                    if (sender.getValue("children") === "0" || sender.getValue("childage") === "1 year old or older") {
+                        options.cancel = true;
+                        window.location.href = "https://google.com"; // replace with screenout URL
+                    }
                 }
             });
 
@@ -201,6 +283,8 @@
         }
 
         initSurvey();
+
+
 
     </script>
 </body>
