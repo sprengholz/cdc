@@ -83,7 +83,3 @@ body{
   font-style: normal;
   font-display: swap;
 }
-
-.sd-body__navigation {
-    justify-content: end;
-}
