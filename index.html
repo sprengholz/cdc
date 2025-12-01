@@ -63,7 +63,7 @@
             var surveyJson = {
                 showPrevButton: false,
                 questionTitlePattern: "numTitle",
-                completedHtml: "<img src='img/animation.gif' style='width: 100px;'/><p>Thank you! Your answeres are stored, please wait...</p>",
+                completedHtml: "<img src='img/animation.gif' style='width: 100px;'/><p>Thank you! Your answers are stored, please wait...</p>",
                 pages: [
                     {
                         name: "consent",
@@ -200,6 +200,8 @@
 
 
             const survey = new Survey.Model(surveyJson);
+
+            survey.setValue("condition", condition);
 
             survey.applyTheme(SurveyTheme.LayeredLight);
 
