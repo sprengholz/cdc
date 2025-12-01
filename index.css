@@ -2,7 +2,7 @@
 
 body{
     margin: 0;
-    background-color: #ffffff;
+    background-color: #eee;
 }
 
 .sd-title.sd-element__title {
@@ -10,7 +10,7 @@ body{
 }
 
 .sd-root-modern {
-    background: transparent;
+    background: #eee;
 
 }
 
@@ -20,4 +20,8 @@ body{
 @font-face {
   font-family: "Nunito";
   src: url('fonts/nunito.a.woff2');
+}
+
+.sd-body__navigation {
+    justify-content: end;
 }

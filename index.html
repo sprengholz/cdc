@@ -17,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
 </head>
 
-<body>
+<body style="background-color: #eee;">
 
     <div id="websiteContainer" style="display: none;">...</div>
 
@@ -96,7 +96,7 @@
                                 name: "children",
                                 title: "**How many children do you have?**",
                                 isRequired: true,
-                                colCount: 2,
+                                colCount: 1,
                                 choices: ["0", "1", "2", "3 or more"]
                             },
                             {
@@ -256,7 +256,7 @@
                 if (sender.currentPage.name === "screener") {
                     if (sender.getValue("children") === "0" || sender.getValue("childage") === "1 year old or older") {
                         options.cancel = true;
-                        window.location.href = "https://google.com"; // replace with screenout URL
+                        window.location.href = "https://prolific.com"; // replace with screenout URL
                     }
                 }
             });
@@ -278,6 +278,12 @@
                     scrollSwitch = false;
                 }
             });
+
+            survey.onValidateQuestion.add(function (sender, options) {
+                    if (options.name === "consent" && options.value === false) {
+                        options.error = "Consent is required to participate in the survey.";
+                    }
+                });
 
             survey.render(document.getElementById("surveyContainer"));
         }
