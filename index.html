@@ -66,6 +66,7 @@
                 questionTitlePattern: "numTitle",
                 completedHtml: "<img src='img/animation.gif' style='width: 100px;'/><p>Thank you! Your answers are stored, please wait...</p>",
                 pages: [
+                    
                     {
                         name: "consent",
 
@@ -195,6 +196,17 @@
                                 isRequired: true
                             }
                         ]
+                    },
+                    {
+                        name: "debriefing",
+                        elements: [
+                            {
+                                type: "html",
+                                name: "debriefing",
+                                html: "<p><b>Debriefing</b></p><p>Please note that the CDC website you saw was from December 2024. It has recently been replaced by a new version. If you are interested in the new version, you can find it here:</p><p>https://www.cdc.gov/vaccine-safety/about/autism.html</p>",
+                                visibleIf: "{condition} == 'old'"
+                            }
+                        ]
                     }
                 ]
             };
@@ -202,6 +214,7 @@
 
             const survey = new Survey.Model(surveyJson);
 
+            survey.setVariable("condition", condition);
             survey.setValue("condition", condition);
 
             survey.applyTheme(SurveyTheme.LayeredLight);
