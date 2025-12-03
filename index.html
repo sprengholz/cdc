@@ -117,7 +117,7 @@
                         elements: [
                             {
                                 type: "html",
-                                html: "<p><b>On the next page, you will see a website published by the Center for Disease Control and Prevention (CDC).</b></p><p><b>Please take at least 2 minutes to review the information presented on the website before proceeding.</p><p>After 2 minutes, the <i>Next</i> button will appear at the end of the website.</b></p>"
+                                html: "<p><b>On the next page, you will see a website published by the Center for Disease Control and Prevention (CDC).</b></p><p>Please take at least 2 minutes to review the information presented on the website before proceeding. <span style='background-color: #FDACAC; border-radius: 3px;'>After 2 minutes, the <i>Next</i> button will appear at the end of the website.</span></p>"
                             }
 
                         ]
@@ -198,13 +198,24 @@
                         ]
                     },
                     {
-                        name: "debriefing",
+                        name: "debriefing_old",
                         elements: [
                             {
                                 type: "html",
                                 name: "debriefing",
-                                html: "<p><b>Debriefing</b></p><p>Please note that the CDC website you saw was from December 2024. It has recently been replaced by a new version. If you are interested in the new version, you can find it here:</p><p>https://www.cdc.gov/vaccine-safety/about/autism.html</p>",
+                                html: "<p><b>Thank you your answers! Please lick <i>Next</i> to complete participation or check out some background information below.</b></p><p>You just took part in a study that looks at how information influences people's decisions about vaccines. Recently, the CDC changed the information on their website about autism and the MMR vaccine. This study tested how people react to that change. Please note that the CDC website you saw was from December 2024; the latest version of the website can be found here: https://www.cdc.gov/vaccine-safety/about/autism.html</p><p><i>About the MMR Vaccine:</i> High-quality research from many countries has shown that the MMR vaccine is not linked to developmental disorders. The scientific studies that examined this question included very large groups of children and followed them for many years. These studies found no evidence of harm to children's development from the vaccine. It remains scientifically proven that vaccines are a safe and effective way to protect health, both for individuals and for the community. If you would like trustworthy information about measles and the MMR vaccine, you can visit the website of the World Health Organization (WHO): https://www.who.int/news-room/fact-sheets/detail/measles. Autism is a complex condition with many possible causes, but vaccines are not one of them: https://www.who.int/groups/global-advisory-committee-on-vaccine-safety/topics/mmr-vaccines-and-autism</p>",
                                 visibleIf: "{condition} == 'old'"
+                            }
+                        ]
+                    },
+                    {
+                        name: "debriefing_new",
+                        elements: [
+                            {
+                                type: "html",
+                                name: "debriefing",
+                                html: "<p><b>Thank you your answers! Please lick <i>Next</i> to complete participation or check out some background information below.</b></p><p>You just took part in a study that looks at how information influences people's decisions about vaccines. Recently, the CDC changed the information on their website about autism and the MMR vaccine. This study tested how people react to that change. Please note that you saw the latest version of the website.<p><i>About the MMR Vaccine:</i> High-quality research from many countries has shown that the MMR vaccine is not linked to developmental disorders. The scientific studies that examined this question included very large groups of children and followed them for many years. These studies found no evidence of harm to children's development from the vaccine. It remains scientifically proven that vaccines are a safe and effective way to protect health, both for individuals and for the community. If you would like trustworthy information about measles and the MMR vaccine, you can visit the website of the World Health Organization (WHO): https://www.who.int/news-room/fact-sheets/detail/measles. Autism is a complex condition with many possible causes, but vaccines are not one of them: https://www.who.int/groups/global-advisory-committee-on-vaccine-safety/topics/mmr-vaccines-and-autism</p>",
+                                visibleIf: "{condition} == 'new'"
                             }
                         ]
                     }
