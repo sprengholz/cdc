@@ -66,7 +66,7 @@
                 questionTitlePattern: "numTitle",
                 completedHtml: "<img src='img/animation.gif' style='width: 100px;'/><p>Thank you! Your answers are stored, please wait...</p>",
                 pages: [
-                    
+
                     {
                         name: "consent",
 
@@ -117,7 +117,7 @@
                         elements: [
                             {
                                 type: "html",
-                                html: "<p><b>On the next page, you will see a website published by the Center for Disease Control and Prevention (CDC).</b></p><p><b>Please take at least 2 minutes to review the information presented on the website before proceeding. After 2 minutes, the <i>Next</i> button will appear at the end of the website.</b></p>"
+                                html: "<p><b>On the next page, you will see a website published by the Center for Disease Control and Prevention (CDC).</b></p><p><b>Please take at least 2 minutes to review the information presented on the website before proceeding.</p><p>After 2 minutes, the <i>Next</i> button will appear at the end of the website.</b></p>"
                             }
 
                         ]
@@ -148,7 +148,7 @@
                             {
                                 type: "rating",
                                 name: "vaccintention",
-                                title: "**In the US, children receive vaccination against measles, mumps and rubella (MMR) in two doses. The first dose is given at 12-15 months of age, and the second dose is given at 4-6 years of age.\n\nHow likely are you to give the MMR vaccine to your youngest child once it is 12-15 months of age?**",
+                                title: "**In the US, children receive vaccination against measles, mumps and rubella (MMR) in two doses. The first dose is given at 12-15 months of age, and the second dose is given at 4-6 years of age.\n\nHow likely are you to give the MMR vaccine to your youngest child once it is 12-15 months old?**",
                                 minRateDescription: "extremely unlikely",
                                 maxRateDescription: "extremely likeley",
                                 rateMin: 1,
@@ -160,7 +160,7 @@
                     {
                         name: "trust",
                         elements: [
-                           {
+                            {
                                 type: "rating",
                                 name: "trustvac",
                                 title: "**How much do you trust vaccination information and recommendations from the CDC?**",
@@ -185,7 +185,7 @@
                     {
                         name: "other",
                         elements: [
-                             {
+                            {
                                 type: "rating",
                                 name: "polorientation",
                                 title: "**In general, how would you describe your political views?**",
@@ -216,6 +216,7 @@
 
             survey.setVariable("condition", condition);
             survey.setValue("condition", condition);
+            survey.setValue("userId", userId);
 
             survey.applyTheme(SurveyTheme.LayeredLight);
 
@@ -272,7 +273,7 @@
                 if (sender.currentPage.name === "screener") {
                     if (sender.getValue("children") === "0" || sender.getValue("childage") === "1 year old or older") {
                         options.cancel = true;
-                        window.location.href = "https://prolific.com"; // replace with screenout URL
+                        window.location.href = "https://app.prolific.com/submissions/complete?cc=CCL283OE";
                     }
                 }
             });
@@ -296,10 +297,83 @@
             });
 
             survey.onValidateQuestion.add(function (sender, options) {
-                    if (options.name === "consent" && options.value === false) {
-                        options.error = "Consent is required to participate in the survey.";
+                if (options.name === "consent" && options.value === false) {
+                    options.error = "Consent is required to participate in the survey.";
+                }
+            });
+
+
+
+
+
+            async function fetchWithRetry(url, options = {}, retries = 3, delay = 500) {
+                try {
+                    const response = await fetch(url, options);
+
+                    // When using no-cors, we can't inspect the result. Assume success.
+                    if (options.mode === "no-cors") return response;
+
+                    if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+
+                    return response;
+                } catch (error) {
+                    if (retries === 0) {
+                        console.error(`❌ Request failed after retries:`, error);
+                        throw error;
                     }
-                });
+
+                    console.warn(`⚠️ Retry in ${delay}ms... (${retries} left)`);
+
+                    await new Promise(res => setTimeout(res, delay));
+
+                    return fetchWithRetry(url, options, retries - 1, delay * 2);
+                }
+            }
+
+            async function saveResults(results) {
+
+                console.log("Started data transfer...");
+
+                // Save to Google Sheets
+                await fetchWithRetry(
+                    "https://script.google.com/macros/s/AKfycbyfqlYEw7No252VEQfEx0Za63kVrP0NWuye8FAOvtPHe_sP5LuRc0c6Rx1xP2D_R2XC/exec",
+                    {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(results)
+                    }
+                );
+                console.log("✔ Sheets done");
+
+                // Save to JSONBin
+                const res = await fetchWithRetry(
+                    "https://api.jsonbin.io/v3/b",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-Access-Key": "$2a$10$m76QOoR/sfsnVPnjwZFPauY0k3U0p7RqUPwP28cRD0CdNV9JYiT5O",
+                            "X-Collection-Id": "691b83e043b1c97be9b3d102"
+                        },
+                        body: JSON.stringify(results)
+                    }
+                );
+                console.log("✔ JSONBin done");
+
+                window.location.href = "https://app.prolific.com/submissions/complete?cc=C1QBI4R2";
+
+            }
+
+            survey.onComplete.add((sender, options) => {
+
+                const results = sender.data;
+                saveResults(results);
+
+            });
+
+
+
 
             survey.render(document.getElementById("surveyContainer"));
         }
