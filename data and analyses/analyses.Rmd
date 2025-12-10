@@ -1,0 +1,68 @@
+---
+title: "CDC Communication Study"
+output: html_notebook
+---
+
+```{r}
+
+library(readxl)
+library(sjPlot)
+
+```
+
+
+```{r}
+
+data <- read_xlsx("data.xlsx")
+
+```
+
+# H1
+
+```{r}
+
+t.test(SIDEEFFECTS ~ CONDITION, data = data, alternative = "greater")
+
+model <- lm(SIDEEFFECTS ~ POLORIENTATION * CONDITION, data = data)
+tab_model(model)
+plot_model(model, type = "int")
+
+```
+
+# H2
+
+```{r}
+
+t.test(VACCINTENTION ~ CONDITION, data = data, alternative = "less")
+
+model <- lm(VACCINTENTION ~ POLORIENTATION * CONDITION, data = data)
+tab_model(model)
+plot_model(model, type = "int")
+
+```
+
+```{r}
+
+cor.test(data$SIDEEFFECTS, data$VACCINTENTION)
+
+```
+
+
+# TRUST
+
+```{r}
+
+t.test(TRUSTVAC ~ CONDITION, data = data)
+t.test(TRUSTGENERAL ~ CONDITION, data = data)
+
+# Political orientation: 1 = very liberal ... 7 = very conservative
+
+model <- lm(TRUSTVAC ~ POLORIENTATION * CONDITION, data = data)
+tab_model(model)
+plot_model(model, type = "int")
+
+model <- lm(TRUSTGENERAL ~ POLORIENTATION * CONDITION, data = data)
+tab_model(model)
+plot_model(model, type = "int")
+
+```
